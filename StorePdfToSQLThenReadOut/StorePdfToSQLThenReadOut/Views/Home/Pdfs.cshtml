@@ -1,0 +1,17 @@
+﻿@using DomainClass
+@model IList<SignedContract>
+@{
+    ViewBag.Title = "Pdfs";
+}
+
+<h2>Pdfs</h2>
+
+@foreach (var contract in Model)
+{
+    <section>
+        <h3>@Html.DisplayFor(m => contract.Id)</h3>
+        <h3>@Html.DisplayFor(m => contract.FileName)</h3>
+        @Html.ActionLink("查看PDF", "Show", new { id = contract.Id })
+    </section>
+}
+
