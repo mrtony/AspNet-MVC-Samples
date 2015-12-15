@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MVC4_DavaValidation.Models;
@@ -33,10 +31,48 @@ namespace MVC4_DavaValidation.Controllers
                 ViewBag.Mobile = model.Phone;
             }
             return View(model);
-        } 
+        }
 
         //
         // GET: /User/Details/5
+
+        [HttpGet]
+        public ActionResult Customer()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Customer(Customer customerInput)
+        {
+            if (ModelState.IsValid)
+            {
+                // store the data
+                // ...
+                //return RedirectToAction("Index", "Home");
+                return View(customerInput);
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Add(AddUrlViewModel userInput)
+        {
+            if (ModelState.IsValid)
+            {
+                // store the data
+                // ...
+                //return RedirectToAction("Index", "Home");
+                return View(userInput);
+            }
+            return View();
+        }
 
         public ActionResult Details(int id)
         {
