@@ -6,6 +6,11 @@
 
 <h2>Index</h2>
 
+<p>
+    @*@Html.ValidationMessage("CustomEmailError")*@
+    @Html.ValidationSummary("")
+</p>
+
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
@@ -42,6 +47,22 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.Email)
             @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AddErrorEmail)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AddErrorEmail)
+            @Html.ValidationMessage("ModelStateError")
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CustomEmail)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CustomEmail)
+            @Html.ValidationMessageFor(model => model.CustomEmail)
         </div>
 
         <div class="editor-label">

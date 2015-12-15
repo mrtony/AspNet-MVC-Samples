@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MVC4_DavaValidation.Models;
 
 namespace MVC4_DavaValidation.Controllers
 {
@@ -15,6 +16,24 @@ namespace MVC4_DavaValidation.Controllers
         {
             return View();
         }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Index(User model)
+        {
+            if (model.AddErrorEmail.Equals("t@gmail.com"))
+            {
+                ModelState.AddModelError("ModelStateError", "Email不可以是t@gmail.com");
+            }
+
+            if (ModelState.IsValid)
+            {
+                ViewBag.Name = model.UserName;
+                ViewBag.Email = model.Email;
+                ViewBag.Password = model.Password;
+                ViewBag.Mobile = model.Phone;
+            }
+            return View(model);
+        } 
 
         //
         // GET: /User/Details/5

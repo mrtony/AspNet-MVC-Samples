@@ -30,6 +30,17 @@ namespace MVC4_DavaValidation.Models
         [Required]
         public string Email { get; set; }
 
+        /// <summary>
+        /// 在controller驗證
+        /// </summary>
+        public string AddErrorEmail { get; set; }
+
+        /// <summary>
+        /// 加入自訂驗證
+        /// </summary>
+        [UserEmailValidator]
+        public string CustomEmail { get; set; }
+
         [DataType(DataType.PhoneNumber)]
         [RegularExpression("^[0-9]{8}$")]
         [StringLength(32)]
