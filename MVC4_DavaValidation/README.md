@@ -138,6 +138,57 @@ $('#' + $("[name=BirthDate]").data('val-validbirthdate-para1')).val()
 ![Alt text](GenerateHtml.png)
 
 ---
+# 一個欄位多重驗證
+可以做後端及前端證. (example: /MultiValidate)
+
+### 後端驗證
+參考`Handling Multiple Validation Rules in ASP.NET MVC Using DataAnnotations and Unobtrusive jQuery Validator - Part 1`. 對同一個欄位做3種驗證.
+
+1. 要先建立3個獨立的客製化驗證: OnlyOneAttribute.cs, CannotContainNumbersAttribute.cs, CannotBeNotApplicableAttribute.cs
+2. 再建立一個合併剛才建立的那3個的驗證類別: ValidNameAttribute.cs
+3. 建立ValidateRegisterModel.cs的資料類別, FirstName欄位套用ValidNameAttribut
+4. 輸入`24&`會出現2個合併的錯誤訊息
+
+### 前端驗證
+作法與後端驗證雷同
+
+1. 在3個獨立的客製化驗證(剛才建立的後端的那3個)加上前端驗證程式.
+2. 在ValidNameAttribut實作IClientValidatable.
+3. 建立rule時, 加入3個參數. 每個參數的值都要用`,`隔開, 在前端會用split去取得各自的字串
+  - clientvalidationrules: 3個獨立的客製化前端驗證程式的ValidationType名稱
+  - regexpatterns: 做驗證時的regular expression, 要傳給前端做驗證
+  - errormessages: 3個獨立的客製化前端驗證程式的錯誤訊息.
+4. 在前端加上JS驗證code, 總共要做3個獨立的客製化前端驗證及1個綜合的驗證程式.
+
+
+```
+rule.ValidationParameters.Add("clientvalidationrules", clientValidationRules.Aggregate((i, j) => i + "," + j));
+rule.ValidationParameters.Add("regexpatterns", regexPatterns.Aggregate((i, j) => i + "," + j));
+rule.ValidationParameters.Add("errormessages", errorMessages.Aggregate((i, j) => i + "," + j));
+```
+
+---
+# 其他小技巧
+
+### 前端自己定義錯誤訊息
+不要加options.messages, 然後在判斷完自己回傳即可. 可用在判斷不同條件下去顯示不同的訊息.
+
+```
+jQuery.validator.addMethod('validbirthdate', function (value, element, params) {
+    var currentDate = new Date();
+    if (Date.parse(value) > currentDate) {
+        jQuery.validator.messages.validbirthdate = "xxx";	//<-- 自行回傳
+        return false;
+    }
+    return true;
+}, '');
+jQuery.validator.unobtrusive.adapters.add('validbirthdate', function(options) {
+    options.rules['validbirthdate'] = {};
+    //options.messages['validbirthdate'] = options.message;	<-- 不要加options.messages
+});
+```
+
+---
 # 有用的參考資料
 * [我參考這篇建立初始範例- ASP.NET MVC Model Validation using Data Annotations](https://joeylicc.wordpress.com/2013/06/20/asp-net-mvc-model-validation-using-data-annotations/)
 * [官方的 - Using Data Annotations for Model Validation](http://www.asp.net/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-6)
@@ -145,3 +196,5 @@ $('#' + $("[name=BirthDate]").data('val-validbirthdate-para1')).val()
 * [Custom Data Annotation Validator Part I : Server Code](http://odetocode.com/blogs/scott/archive/2011/02/22/custom-data-annotation-validator-part-i-server-code.aspx)
 * [Custom Data Annotation Validator Part II: Client Code](http://odetocode.com/blogs/scott/archive/2011/02/23/custom-data-annotation-validator-part-ii-client-code.aspx)
 * [失敗的-Creating Custom Validation Attribute in ASP.NET MVC](http://blog.andrei.rinea.ro/2013/06/28/building-client-javascript-custom-validation-in-asp-net-mvc-4-using-jquery/)
+* [Handling Multiple Validation Rules in ASP.NET MVC Using DataAnnotations and Unobtrusive jQuery Validator - Part 1](https://www.captechconsulting.com/blogs/handling-multiple-validation-rules-in-aspnet-mvc-using-dataannotations-and-unobtrusive-jquery-validator---part-1)
+* [Handling Multiple Validation Rules in ASP.NET MVC Using DataAnnotations and Unobtrusive jQuery Validator - Part 2](https://www.captechconsulting.com/blogs/handling-multiple-validation-rules-in-aspnet-mvc-using-dataannotations-and-unobtrusive-jquery-validator---part-2)

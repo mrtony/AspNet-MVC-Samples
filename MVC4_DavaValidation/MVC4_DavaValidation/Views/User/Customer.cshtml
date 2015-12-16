@@ -57,6 +57,7 @@
             console.log($("[name=BirthDate]").data('val-validbirthdate-other'));
             var currentDate = new Date();
             if (Date.parse(value) > currentDate) {
+                jQuery.validator.messages.validbirthdate = "xxx";
                 return false;
             }
             return true;
@@ -64,7 +65,7 @@
 
         jQuery.validator.unobtrusive.adapters.add('validbirthdate', function(options) {
             options.rules['validbirthdate'] = {};
-            options.messages['validbirthdate'] = options.message;
+            //options.messages['validbirthdate'] = options.message;
         });
     </script>
 }

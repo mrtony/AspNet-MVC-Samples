@@ -1,0 +1,135 @@
+﻿@model MVC4_DavaValidation.Models.ValidateRegisterModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>ValidateRegisterModel</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FirstName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LastName)
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $.validator.addMethod("onlyoneentity", function (value, element, param) {
+            if (value == "" || value == null || value == undefined) {
+                return true;
+            }
+            var pattern = param['pattern'];
+            return value.match(pattern) == null ? false : true;
+        }, "Only One Entity Failed");
+
+        $.validator.addMethod("cannotbenotapplicable", function (value, element, param) {
+            if (value == "" || value == null || value == undefined) {
+                return true;
+            }
+            var pattern = param['pattern'];
+            return value.match(pattern) == null ? false : true;
+        }, "Cannot be N/A Failed");
+        $.validator.addMethod("cannotcontainnumbers", function (value, element, param) {
+            if (value == "" || value == null || value == undefined) {
+                return true;
+            }
+            var pattern = param['pattern'];
+            return value.match(pattern) == null ? false : true;
+        }, "Cannot be Numbers Failed");
+
+        $.validator.unobtrusive.adapters.add('onlyoneentity', ['pattern'], function (options) {
+            options.rules['onlyoneentity'] = {
+                pattern: options.params['pattern']
+            };
+            options.messages['onlyoneentity'] = options.message;
+        });
+
+        $.validator.unobtrusive.adapters.add('cannotbenotapplicable', ['pattern'], function (options) {
+            options.rules['cannotbenotapplicable'] = {
+                pattern: options.params['pattern']
+            };
+            options.messages['cannotbenotapplicable'] = options.message;
+        });
+        $.validator.unobtrusive.adapters.add('cannotcontainnumbers', ['pattern'], function (options) {
+            options.rules['cannotcontainnumbers'] = {
+                pattern: options.params['pattern']
+            };
+            options.messages['cannotcontainnumbers'] = options.message;
+        });
+
+
+        jQuery.validator.addMethod("validname", function (value, element, param) {
+                if (value === "" || value === null || value === undefined) {
+                    return true;
+                }
+                var patterns = param["regexpatterns"];
+                var rulesErrormessages = param["errormessages"];
+                var validationrules = param["clientvalidationrules"];
+                var validNameErrorMessage = new Array();
+                var index = 0;
+                for (var i = 0; i < patterns.length; i++) {
+                    var valid = true;
+                    var pattern = patterns[i].trim();
+                    var rule = jQuery.validator.methods[validationrules[i].trim()];
+                    var parameter = new Object();
+                    parameter['pattern'] = pattern;
+                    var isValid = rule.call(this, value, element, parameter) && valid;
+                    if (!isValid) {
+                        validNameErrorMessage[index] = rulesErrormessages[i];
+                        index++;
+                    }
+                }
+                if (validNameErrorMessage.length > 0) {
+                    jQuery.validator.messages.validname = "This field " + validNameErrorMessage.toString();
+                    return false;
+                }
+                return true;
+            }
+            , "This is not a valid individual name"//defualt error message
+        );
+
+        jQuery.validator.unobtrusive.adapters.add('validname', ['clientvalidationrules', 'regexpatterns', 'errormessages'], function (options) {
+            options.rules['validname'] = {
+                clientvalidationrules: options.params['clientvalidationrules'].split(','),
+                regexpatterns: options.params['regexpatterns'].split(','),
+                errormessages: options.params['errormessages'].split(',')
+            };
+        });
+    </script>
+}

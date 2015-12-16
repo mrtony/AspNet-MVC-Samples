@@ -163,10 +163,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\CannotBeNotApplicableAttribute.cs" />
+    <Compile Include="Attributes\CannotContainNumbersAttribute.cs" />
+    <Compile Include="Attributes\OnlyOneAttribute.cs" />
+    <Compile Include="Attributes\ValidNameAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MultiValidateController.cs" />
     <Compile Include="Models\AddUrlViewModel.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\ValidateRegisterModel.cs" />
     <Compile Include="Models\RequiredIfTrueAttribute.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -176,15 +182,15 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserEmailValidator.cs" />
-    <Compile Include="Models\ValidBirthDate.cs" />
+    <Compile Include="Attributes\ValidBirthDate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.7.1-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.7.1.js" />
-    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery-1.11.3-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.11.3.js" />
+    <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -249,6 +255,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\User\Customer.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\MultiValidate\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\jquery-1.11.3.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

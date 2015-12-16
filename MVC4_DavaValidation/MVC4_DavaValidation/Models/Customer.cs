@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using MVC4_DavaValidation.Attributes;
 
 namespace MVC4_DavaValidation.Models
 {
